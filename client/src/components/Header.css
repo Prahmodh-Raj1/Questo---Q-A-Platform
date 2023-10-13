@@ -1,0 +1,62 @@
+header {
+    display: flex;
+    
+    justify-content: space-between;
+    background: #f5f5f5;
+    position: sticky;
+    top: 0px;
+    z-index: 100000;
+    min-height: 5vh;
+    padding: 1rem;
+    width: 100vw;
+  }
+  
+  .header-left {
+    display: flex; /* Add display:flex to align items horizontally */
+    align-items: center; /* Center items vertically within .header-left */
+  }
+  
+  .header-left h1 {
+    color: #3d348b;
+    font-size: 2rem;
+  }
+  
+  .products-button {
+    padding: 5px 10px;
+    background: #f5f5f5;
+    color: #333; /* Dark text color */
+    text-decoration: none; /* Remove underline from the link */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-left: 1rem; /* Add margin-left to separate from Questo */
+  }
+  
+  .products-button:hover {
+    background: #ccc; /* Darken the background color on hover */
+  }
+  
+  .header-right button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #f9c74f;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-right: 1rem; /* Add margin-right to create space between buttons */
+  }
+  
+  .header-right button:hover {
+    background: #e59300;
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .header-right {
+      margin-right: 0.5rem;
+      margin-top: 1rem;
+    }
+  }
+  
