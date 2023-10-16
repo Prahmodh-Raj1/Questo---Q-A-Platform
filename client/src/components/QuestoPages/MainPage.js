@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom'
 //import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import AllQuestions from './AllQuestions'
 import './Main.css'
+import { AiFillFilter } from 'react-icons/ai';
 function MainPage() {
   return (
     <div className='main'>
         <div className='main-container'>
           <div className='main-top'>
             <h2>All Questions</h2>
-            <Link to='/'>
+            <Link to='/add-question'>
               <button>Ask Question</button>
             </Link>
         
@@ -29,12 +30,15 @@ function MainPage() {
                 </div>
               </div>
               <div className='main-filter-item'>
+              <AiFillFilter/>
                 <p>Filter</p>
               </div>
             </div>
           </div>
           <div className='questions'>
                 <div className='question'>
+                  <AllQuestions/>
+                  <AllQuestions/>
                   <AllQuestions/>  
                 </div>
           </div>

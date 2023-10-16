@@ -1,13 +1,18 @@
 import React from 'react'
 import './Header.css'
+import { Link } from 'react-router-dom'
 function Header() {
   return (
     <header>
       <div className="header-left">
+        
         <h1>Questo</h1>
-        <a href="#products" className="products-button">
+        
+        
+        <a href="/" className="products-button">
           Products
         </a>
+        
       </div>
 
       <div className="header-right">

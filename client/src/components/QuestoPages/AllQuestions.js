@@ -21,7 +21,7 @@ function AllQuestions() {
           </div>
         </div>
         <div className='question-answer'>
-          <Link to='/'>How to write a NestJs api endpoint</Link>
+          <Link to='/question'>How to write a NestJs api endpoint</Link>
           <div style={{
             width: '90%'
           }}>
@@ -36,7 +36,7 @@ function AllQuestions() {
             </div>
             <div className='author'>
               <small>Timestamp</small>
-              <div className='author-details'>
+              <div className='auth-details'>
                 <p>Username</p>
               </div>
               </div>

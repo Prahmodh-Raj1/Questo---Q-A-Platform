@@ -3,7 +3,10 @@ import './Sidebar.css';
 /*import StarIcon from '@material-ui/icons/Star';
 import PublicIcon from '@material-ui/icons/Public'; 
 import WorkIcon from '@material-ui/icons/Work';*/
+import { MdPublic } from 'react-icons/md';
+import { LiaStarSolid } from 'react-icons/lia';
 import { Link as RouterLink} from 'react-router-dom';
+import { MdWork } from 'react-icons/md';
 function Sidebar() {
   return (
     <div className='sidebar'>
@@ -16,7 +19,7 @@ function Sidebar() {
                     <RouterLink to='/'>Public</RouterLink>
                     <div className='link'>
                         <div className='link-tag'>
-                           
+                           <MdPublic/>
                             <RouterLink to='/'>Question</RouterLink>
                         </div>
                         <div className='tags'>
@@ -30,7 +33,7 @@ function Sidebar() {
                 
                     <div className='link'>
                         <div className='link-tag'>
-                            
+                            <LiaStarSolid/>
                             <RouterLink to='/'>Explore Collectives</RouterLink>
                         </div>
                         
@@ -50,7 +53,7 @@ function Sidebar() {
                 <div className='sidebar-option'>
                     <p>TEAMS</p>
                     <div className='link-tag'>
-                        
+                        <MdWork/>
                         <RouterLink to='/'>Companies</RouterLink>        
                     </div>
                     
