@@ -1,20 +1,23 @@
 import React from 'react'
-import StarIcon from '@material-ui/icons/Star';
+import './Sidebar.css';
+/*import StarIcon from '@material-ui/icons/Star';
 import PublicIcon from '@material-ui/icons/Public'; 
+import WorkIcon from '@material-ui/icons/Work';*/
+import { Link as RouterLink} from 'react-router-dom';
 function Sidebar() {
   return (
     <div className='sidebar'>
         <div className='sidebar-container'>
             <div className='sidebar-options'>
                 <div className='sidebar-option'>
-                    <a>Home</a>
+                    <RouterLink to='/'>Home</RouterLink>
                 </div>
                 <div className='sidebar-option'>
-                    <a>Public</a>
+                    <RouterLink to='/'>Public</RouterLink>
                     <div className='link'>
                         <div className='link-tag'>
-                            <PublicIcon/>
-                            <a>Question</a>
+                           
+                            <RouterLink to='/'>Question</RouterLink>
                         </div>
                         <div className='tags'>
                             <p>Tags</p>
@@ -27,8 +30,8 @@ function Sidebar() {
                 
                     <div className='link'>
                         <div className='link-tag'>
-                            <StarIcon/>
-                            <a>Explore Collectives</a>
+                            
+                            <RouterLink to='/'>Explore Collectives</RouterLink>
                         </div>
                         
                     </div>
@@ -37,8 +40,8 @@ function Sidebar() {
                     <p>Find a Job</p>
                     <div className='link'>
                         <div className='link-tag'>
-                            <StarIcon/>
-                            <a>Question</a>
+                            
+                            <RouterLink to='/'>Question</RouterLink>
                         </div>
                         
                     </div>
@@ -46,6 +49,10 @@ function Sidebar() {
                 </div>
                 <div className='sidebar-option'>
                     <p>TEAMS</p>
+                    <div className='link-tag'>
+                        
+                        <RouterLink to='/'>Companies</RouterLink>        
+                    </div>
                     
                 </div>
 
