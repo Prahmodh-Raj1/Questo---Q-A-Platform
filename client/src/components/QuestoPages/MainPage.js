@@ -16,7 +16,7 @@ function MainPage() {
         
           </div>
           <div className='main-dec'>
-            <p>All questions</p>
+            <p>Available Questions</p>
             <div className='main-filter'>
               <div className='main-tabs'>
                 <div className='main-tab'>
