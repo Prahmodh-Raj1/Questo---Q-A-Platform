@@ -7,31 +7,60 @@ import Question from './components/AddQuestion/Question';
 import ViewPage from './components/ViewQuestion/ViewPage';
 import Index from './components/Auth/Index';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from './features/userSlice';
+import { login, logout, selectUser } from './features/userSlice';
 import { Auth } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
+//import { Navigate } from 'react-router-dom';
+import PrivateRoute from './PrivateRoute';
+//import { selectUser } from './features/userSlice';
+import { Navigate } from 'react-router-dom';
+import Provider from 'react-redux';
 
 function App() {
   const user = useSelector(selectUser)
   const dispatch = useDispatch()
   const auth = getAuth()
-
-  /*useEffect(()=>{
-    auth.onAuthStateChanged
-  },[])*/
+  /*const PrivateRoute = ({ children }) => {
+    const user = useSelector(selectUser);
+    console.log("user: ",user)
+  
+    // Check if the user is logged in (user exists in Redux store)
+    if (user) {
+      return children; // Render the child components if the user is authenticated
+    } else {
+      return <Navigate to="/auth" />; // Redirect to the authentication page if the user is not authenticated
+    }
+  };*/
+  
+  useEffect(()=>{
+    auth.onAuthStateChanged((authUser)=>{
+      if(authUser){
+        dispatch(login({
+          uid: authUser.uid,
+          photo: authUser.photoURL,
+          displayName: authUser.displayName,
+          email: authUser.email
+        }))
+      }else{
+        dispatch(logout())
+      }
+    })
+  },[dispatch])
+  
   return (
     <div className="App">
-      <Header/>
+      <Header />
       <BrowserRouter>
-      <Routes>
-        <Route exact path='/' element={<HomePage/>}></Route>
-        <Route path='/add-question' element={<Question/>}></Route>
-        <Route path='/question' element={<ViewPage/>}></Route>
-        <Route path='/auth' element={<Index/>}></Route>
+        <Routes>
+          <Route path="/auth" element={<Index />} />
+          <Route path="/" element={<PrivateRoute user={user}><HomePage /></PrivateRoute>} />
+
+          <Route path="/add-question" element={<PrivateRoute user={user}><Question /></PrivateRoute>} />
+          <Route path="/question" element={<PrivateRoute user={user}><ViewPage /></PrivateRoute>} />
+
         </Routes>
       </BrowserRouter>
-      
-     </div>
+    </div>
   );
 }
 

@@ -1,7 +1,11 @@
 import React from 'react'
 import './Header.css'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../features/userSlice'
+import { signOut } from 'firebase/auth'
 function Header() {
+  const user = useSelector(selectUser)
   return (
     <header>
       <div className="header-left">
@@ -17,7 +21,9 @@ function Header() {
 
       <div className="header-right">
         <button onClick={() => alert('Sign Up')}>Sign Up</button>
-        <button onClick={() => alert('Log In')}>Log In</button> 
+        <button onClick={()=>{
+          signOut()
+        }}>Log In</button> 
       </div>
     </header>
   )

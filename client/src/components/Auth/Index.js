@@ -1,26 +1,61 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './index.css'
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, provider } from '../../firebase';
+import { useDispatch } from 'react-redux';
+import { login } from '../../features/userSlice';
+import { useNavigate } from 'react-router-dom';
 function Index() {
+  const dispatch = useDispatch();
   const [register,setRegister] = useState(false);
   const [email,setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username,setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [error,setError] = useState("")
+  const navigate = useNavigate()
+  const handleLogin = (user) => {
+    // Serialize the user object to only include necessary data
+    const serializableUser = {
+      uid: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+      // Add any other relevant user data you need
+    };
+    dispatch(login(serializableUser));
+  };
 
   const handleSigninGoogle = ()=>{
     signInWithPopup(auth,provider).then((res)=>{
-      console.log(res)
+      console.log(res);
+      const user = res.user;
+      handleLogin(user)
+      navigate('/')
     })
   }
-  const handleRegister = ()=>{
+  const handleRegister = (e)=>{
+    e.preventDefault()
     setError("")
     setLoading(true)
+    if(email==="" || password==="" || username===""){
+      setError("Required fields are missing")
+    }else{
+      createUserWithEmailAndPassword(auth,email,password).then((res)=>{
+        console.log(res)
+        const user = res.user;
+        handleLogin(user)
+        
+        setLoading(false)
+      }).catch((err)=>{
+        console.log(err)
+        setError(err.message)
+        setLoading(false)
+      })
+    }
 
   }
-  const handleSignIn = ()=>{
+  const handleSignIn = (e)=>{
+    e.preventDefault()
     setError("")
     setLoading(true)
     if(email ==="" || password ==="" ){
@@ -29,6 +64,9 @@ function Index() {
     }else{
       signInWithEmailAndPassword(auth,email,password).then((res)=>{
         console.log(res)
+        const user = res.user
+        handleLogin(user)
+        navigate('/')
         setLoading(false)
       }).catch((err)=>{
         console.log(err.code)
@@ -37,6 +75,13 @@ function Index() {
       })
     }
   }
+  useEffect(() => {
+    // You can use this useEffect to check if the user is already authenticated and set the user in the store.
+    if(auth.currentUser){
+      handleLogin(auth.currentUser);
+    }
+    
+  }, []);
   return (
     <div className='auth'>
       <div className='auth-container'>
@@ -53,32 +98,36 @@ function Index() {
                 register ? (<>
                   <div className='input-field'>
                     <p>Username</p>
-                    <input type='text'/>
+                    <input value={username} onChange={(e)=>setUsername(e.target.value)} type='text'/>
                   </div>
                   <div className='input-field'>
                     <p>Email</p>
-                    <input type='text'/>
+                    <input value={email} onChange = {(e)=>setEmail(e.target.value)} type='text'/>
                   </div>
                   <div className='input-field'>
                     <p>Password</p>
-                    <input type='text'/>
+                    <input value={password} onChange={
+                      (e)=>setPassword(e.target.value) 
+                    }type='password'/>
                   </div>
-                  <button style={{
+                  <button onClick={handleRegister} disabled={loading} style={{
                     marginTop: "10px"
-                  }}>Register</button>
+                  }}>{loading ? 'Registering...':'Register'}</button>
                 </>):(<>
                   
                   <div className='input-field'>
                     <p>Email</p>
-                    <input type='text'/>
+                    <input value={email} onChange = {(e)=>setEmail(e.target.value)} type='text'/>
                   </div>
                   <div className='input-field'>
                     <p>Password</p>
-                    <input type='text'/>
+                    <input value={password} onChange={
+                      (e)=>setPassword(e.target.value) 
+                    }type='password'/>
                   </div>
-                  <button style={{
+                  <button onClick={handleSignIn} disabled={loading} style={{
                     marginTop: "10px"
-                  }}>Login</button></>)
+                  }}>{loading ? 'Signing in...' : 'Login'}</button></>)
               }
               <p onClick={()=>{
                 setRegister(!register)
@@ -91,6 +140,14 @@ function Index() {
               }}>{register ? "Login" : "Register"}</p>
           </div>
          </div>
+         {
+          error !=="" && (<p style={{
+            color: "red",
+            fontSize: "14px"
+          }}>
+            {error}
+          </p>)
+         }
       </div>
     </div>
   )
