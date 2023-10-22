@@ -3,8 +3,42 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'  //necessary for quill's css
 import {TagsInput} from 'react-tag-input-component'
 import './Question.css'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import {selectUser} from '../../features/userSlice'
+import Axios from 'axios'
 function Question() {
     const [tags, setTags] = useState([]);
+    const [title,setTitle] = useState("");
+    const [body,setBody] = useState("");
+    const [loading,setLoading] = useState(false)
+    const navigate = useNavigate()
+    const user = useSelector(selectUser)
+    function handleQuill(value){
+        setBody(value)
+    }
+    const handleSubmit = async (e)=>{
+        e.preventDefault()
+        if(title !== "" && body !==""){
+            setLoading(true)
+            const bodyJSON = {
+                title: title,
+                body: body,
+                tags: JSON.stringify(tags),
+                user: user
+            }
+            console.log(bodyJSON)
+            await Axios.post('/api/question',bodyJSON).then((res)=>{
+                alert('Question added successfully')
+                setLoading(false)
+                navigate('/')
+            }).catch((err)=>{
+                console.error("There is an error here: ",err)
+                setLoading(true)
+            })
+        }
+        
+    }
   return (
     <div className='overall-page'>
     <div className='add-question'>
@@ -18,14 +52,14 @@ function Question() {
                 <div className='title'>
                     <h3>Title</h3>
                     <small>Be specific and precise</small>
-                    <input type='text' placeholder='Add the Question Title'></input>
+                    <input value={title} onChange= {(e)=> setTitle(e.target.value)} type='text' placeholder='Add the Question Title'></input>
                 </div>
             </div>
             <div className='question-option'>
             <div className='title'>
                     <h3>Body</h3>
                     <small>Include all necessary information</small>
-                    <ReactQuill className='react-quill' theme='snow'/>
+                    <ReactQuill value={body} onChange={handleQuill} className='react-quill' theme='snow'/>
                 </div>
             </div>
             <div className='question-option'>
@@ -35,14 +69,16 @@ function Question() {
                     <TagsInput
                         value={tags}
                         onChange={setTags}
-                        name="fruits"
-                        placeHolder="enter fruits"
+                        name="tags"
+                        placeHolder="Press enter to add tags"
                     />
                 </div>
             </div>
             </div>
             </div>
-            <button className='button'>Add your question</button>    
+            <button type='submit' onClick={handleSubmit} className='button'>{
+                loading ? 'Adding question...': 'Add your question'
+            }</button>    
         </div>
     </div>
     </div>

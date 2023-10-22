@@ -63,4 +63,18 @@ header {
       margin-top: 1rem;
     }
   }
+  .header-right svg {
+    width: 32px;
+    height: 32px;
+  }
+  
+  /* Reduce space between icons */  
+  .header-right svg {
+    margin-left: 10px;
+  }
+  
+  /* Move icons more left */
+  .header-right {
+    margin-right: 40px;
+  }
   

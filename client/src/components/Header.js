@@ -1,11 +1,16 @@
 import React from 'react'
 import './Header.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../features/userSlice'
-import { signOut } from 'firebase/auth'
+import { auth } from '../firebase'
+import { RxAvatar } from 'react-icons/rx'
+import { BiSolidInbox, BiHelpCircle } from 'react-icons/bi';
+//import { signOut } from 'firebase/auth'
 function Header() {
   const user = useSelector(selectUser)
+  console.log(user)
+  //const navigate = useNavigate()
   return (
     <header>
       <div className="header-left">
@@ -18,13 +23,21 @@ function Header() {
         </a>
         
       </div>
-
       <div className="header-right">
+    <span onClick={()=>{
+      auth.signOut();
+    }}><RxAvatar size={36}/></span>
+    <BiSolidInbox size={36}/> 
+    <BiHelpCircle size={36} />
+  </div>
+      {/*<div className="header-right">
         <button onClick={() => alert('Sign Up')}>Sign Up</button>
-        <button onClick={()=>{
-          signOut()
-        }}>Log In</button> 
-      </div>
+        <button onClick={
+          ()=>{
+            auth.signOut()
+          }
+        }>Log In</button> 
+      </div>*/}
     </header>
   )
 }
