@@ -19,6 +19,7 @@ function Question() {
     }
     const handleSubmit = async (e)=>{
         e.preventDefault()
+        console.log("Inside the function")
         if(title !== "" && body !==""){
             setLoading(true)
             const bodyJSON = {

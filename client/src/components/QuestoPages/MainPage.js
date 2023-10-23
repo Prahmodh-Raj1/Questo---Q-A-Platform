@@ -1,10 +1,22 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 //import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import AllQuestions from './AllQuestions'
 import './Main.css'
 import { AiFillFilter } from 'react-icons/ai';
-function MainPage() {
+import axios from 'axios'
+function MainPage({questions}) {
+  /*const [questions,setQuestions] = useState([])
+  useEffect( ()=>{
+    //async function getQuestion(){
+      axios.get('/api/question').then((res)=>{
+        console.log("hi there")
+        console.log(res.data)
+      }).catch((err)=> console.log(err))
+    
+    //getQuestion()
+    
+  },[])*/
   return (
     <div className='main'>
         <div className='main-container'>
@@ -16,7 +28,7 @@ function MainPage() {
         
           </div>
           <div className='main-dec'>
-            <p>Available Questions</p>
+            <p>{questions && questions.length} Questions</p>
             <div className='main-filter'>
               <div className='main-tabs'>
                 <div className='main-tab'>
@@ -35,13 +47,13 @@ function MainPage() {
               </div>
             </div>
           </div>
-          <div className='questions'>
-                <div className='question'>
-                  <AllQuestions/>
-                  <AllQuestions/>
-                  <AllQuestions/>  
-                </div>
-          </div>
+          <div className="questions">
+          {questions?.map((_q,index) => (
+            <div key = {index} className="question">
+              <AllQuestions question={_q} />
+            </div>
+          ))}
+        </div>
         </div>
     </div>
     

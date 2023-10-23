@@ -1,7 +1,14 @@
 import React from 'react'
 import './AllQuestions.css'
 import {Link} from 'react-router-dom'
-function AllQuestions() {
+import parse from 'html-react-parser'
+import { RxAvatar } from 'react-icons/rx'
+function AllQuestions({question}) {
+  function truncate(str, n) {
+    return str?.length > n ? str.substr(0, n - 1) + "..." : str;
+  }
+  let tags = JSON.parse(question?.tags[0])
+  //const tags=[]
   return (
     <div className='all-questions'>
       <div className='all-questions-container'>
@@ -12,7 +19,7 @@ function AllQuestions() {
               <span>Votes</span>
             </div>
             <div className='all-option'>
-              <p>0</p>
+              <p>{question?.answerDetails?.length}</p>
               <span>Answers</span>
             </div>
             <div className='all-option'>
@@ -21,23 +28,38 @@ function AllQuestions() {
           </div>
         </div>
         <div className='question-answer'>
-          <Link to='/question'>How to write a NestJs api endpoint</Link>
+          {console.log('questionid: ',question?._id)}
+          <Link to={`/question?q=${question?._id}`}>{parse(truncate(question?.title),100)}</Link>
           <div style={{
             width: '90%'
           }}>
-            <div>This is the question body that takes it's place in the webpage at this position</div>
+            <div>{parse(truncate(question?.body,200))}</div>
           </div>
+          
           <div style={{
             display: "flex"
           }}>
-            <span className='question-tags'>react</span>
-            <span className='question-tags'>NestJs</span>
-            <span className='question-tags'>Nodejs</span>
+            {tags.map((_tag,index) => (
+              <p key={index}
+                style={{
+                  margin: "10px 5px",
+                  padding: "5px 10px",
+                  backgroundColor: "#007cd446",
+                  borderRadius: "3px",
+                }}
+              >
+                {_tag}
+              </p>
+            ))}
+            
             </div>
             <div className='author'>
-              <small>Timestamp</small>
+              <small>{new Date(question?.created_at).toLocaleString()}</small>
               <div className='auth-details'>
-                <p>Username</p>
+                <RxAvatar size={30}/>
+                <p style={{
+                  fontSize: "18px"
+                }}>{question?.user?.displayName ? question?.user?.displayName : String(question?.user?.email).split('@')[0]}</p>
               </div>
               </div>
         </div>

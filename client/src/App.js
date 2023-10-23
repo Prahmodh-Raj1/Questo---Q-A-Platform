@@ -53,7 +53,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/auth" element={<Index />} />
-          <Route exact path="/" element={<PrivateRoute user={user}><HomePage /></PrivateRoute>} />
+          <Route path="/" element={<PrivateRoute user={user}><HomePage /></PrivateRoute>} />
 
           <Route path="/add-question" element={<PrivateRoute user={user}><Question /></PrivateRoute>} />
           <Route path="/question" element={<PrivateRoute user={user}><ViewPage /></PrivateRoute>} />

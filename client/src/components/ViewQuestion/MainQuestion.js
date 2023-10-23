@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BsFillBookmarkFill } from 'react-icons/bs';
 import { AiOutlineHistory } from 'react-icons/ai';
@@ -6,8 +6,25 @@ import { RxAvatar } from 'react-icons/rx';
 import ReactQuill from 'react-quill';
 import './MainQuestion.css'
 import 'react-quill/dist/quill.snow.css'
+import axios from 'axios';
 function MainQuestion() {
     const [show, setShow] = useState(false);
+
+    const [questionData, setquestionData] = useState()
+    let search = window.location.search
+    console.log("Search string: " + search)
+    const params = new URLSearchParams(search)
+    const id= params.get("q")
+    console.log("id: " + id)
+    useEffect(()=>{
+        async function getQuestionDetails(){
+            await axios.get(`/api/question/${id}`).then((res)=>{
+                console.log(res.data[0])
+                setquestionData(res.data[0])
+            })
+        }
+        getQuestionDetails()
+    },[])
 return (
         <div className='main'>
             <div className='main-container'>
