@@ -23,7 +23,10 @@ function MainPage({questions}) {
           <div className='main-top'>
             <h2>All Questions</h2>
             <Link to='/add-question'>
-              <button>Ask Question</button>
+            <button 
+    className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-400">
+    Ask Question
+  </button> 
             </Link>
         
           </div>
@@ -32,13 +35,13 @@ function MainPage({questions}) {
             <div className='main-filter'>
               <div className='main-tabs'>
                 <div className='main-tab'>
-                  <Link to='/'>Most Recent</Link>
+                  <Link to='/home'>Most Recent</Link>
                 </div>
                 <div className='main-tab'>
-                  <Link to='/'>Active</Link>
+                  <Link to='/home'>Active</Link>
                 </div>
                 <div className='main-tab'>
-                  <Link to='/'>More</Link>
+                  <Link to='/home'>More</Link>
                 </div>
               </div>
               <div className='main-filter-item'>

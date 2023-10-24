@@ -32,7 +32,7 @@ function Question() {
             await Axios.post('/api/question',bodyJSON).then((res)=>{
                 alert('Question added successfully')
                 setLoading(false)
-                navigate('/')
+                navigate('/home')
             }).catch((err)=>{
                 console.error("There is an error here: ",err)
                 setLoading(true)
@@ -77,9 +77,10 @@ function Question() {
             </div>
             </div>
             </div>
-            <button type='submit' onClick={handleSubmit} className='button'>{
+            
+            <button type='submit' onClick={handleSubmit} className='bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-400'>{
                 loading ? 'Adding question...': 'Add your question'
-            }</button>    
+            }</button>  
         </div>
     </div>
     </div>

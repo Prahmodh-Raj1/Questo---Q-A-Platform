@@ -6,37 +6,48 @@ import { RxAvatar } from 'react-icons/rx';
 import ReactQuill from 'react-quill';
 import './MainQuestion.css'
 import 'react-quill/dist/quill.snow.css'
+import parse from 'html-react-parser'
 import axios from 'axios';
 function MainQuestion() {
     const [show, setShow] = useState(false);
 
-    const [questionData, setquestionData] = useState()
+    const [questionData, setquestionData] = useState({
+        question: {},
+        answers: [],
+        comments:[],
+    })
     let search = window.location.search
     console.log("Search string: " + search)
     const params = new URLSearchParams(search)
     const id= params.get("q")
     console.log("id: " + id)
-    useEffect(()=>{
-        async function getQuestionDetails(){
-            await axios.get(`/api/question/${id}`).then((res)=>{
-                console.log(res.data[0])
-                setquestionData(res.data[0])
+    useEffect(() => {
+        async function getFunctionDetails() {
+          await axios
+            .get(`/api/question/${id}`)
+            .then((res) => {
+                console.log(res.data)
+                setquestionData(res.data)
             })
+            .catch((err) => console.log(err));
         }
-        getQuestionDetails()
-    },[])
+        getFunctionDetails();
+      }, [id]);
 return (
         <div className='main'>
             <div className='main-container'>
                 <div className='main-top'>
-                    <h2 className='main-question'>Question Title</h2>
+                    <h2 className='main-question'>{questionData.question.title}</h2>
                     <Link to='/add-question'>
-                        <button>Ask Question</button>
+                    <button 
+    className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-400">
+    Ask Question
+  </button> 
                     </Link>
                 </div>
                 <div className='main-desc'>
                     <div className='info'>
-                        <p>Timestamp</p>
+                        <p>Created at: {new Date(questionData.question.created_at).toLocaleString()}</p>
                         <p>Active<span>today</span></p>
                         <p>Views<span>today</span></p>
 
@@ -54,12 +65,12 @@ return (
                             </div>
                         </div>
                         <div className='question-answer'>
-                            <p>This is question body</p>
+                            <p>{parse(questionData.question.body)}</p>
                             <div className='author'>
-                                <small>asked Timestamp</small>
+                                <small>asked at {new Date(questionData.question.created_at).toLocaleString()}</small>
                                 <div className='auth-details'>
                                     <RxAvatar/>
-                                    <p>Author name</p>
+                                    <p>{questionData?.question?.user?.displayName ? questionData?.question?.user?.displayName : String(questionData?.question?.user?.email).split('@')[0]}</p>
                                 </div>
                             </div>
                             <div className="comments">
@@ -128,10 +139,11 @@ return (
                     height: "200px"
                 }}/>
             </div>
-            <button style={{
-                maxWidth: 'fit-content',
-                margin: "80px 0"
-            }} type='button'>Post your Answer</button>    
+            
+            <button 
+    className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-400 max-w-fit mx-auto my-20">
+    Post Answer
+  </button>    
         </div>
 )
 }

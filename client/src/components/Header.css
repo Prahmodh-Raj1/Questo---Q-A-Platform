@@ -76,5 +76,7 @@ header {
   /* Move icons more left */
   .header-right {
     margin-right: 40px;
+    display: flex;
+    align-items: center;
   }
   

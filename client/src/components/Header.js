@@ -26,9 +26,9 @@ function Header() {
       <div className="header-right">
     <span onClick={()=>{
       auth.signOut();
-    }}><RxAvatar size={36}/></span>
-    <BiSolidInbox size={36}/> 
-    <BiHelpCircle size={36} />
+    }}><RxAvatar size={72}/></span>
+    <BiSolidInbox size={72}/> 
+    <BiHelpCircle size={72} />
   </div>
       {/*<div className="header-right">
         <button onClick={() => alert('Sign Up')}>Sign Up</button>

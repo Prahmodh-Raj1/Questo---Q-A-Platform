@@ -30,7 +30,7 @@ function Index() {
       console.log(res);
       const user = res.user;
       handleLogin(user)
-      navigate('/')
+      navigate('/home')
     })
   }
   const handleRegister = (e)=>{
@@ -66,7 +66,7 @@ function Index() {
         console.log(res)
         const user = res.user
         handleLogin(user)
-        navigate('/')
+        navigate('/home')
         setLoading(false)
       }).catch((err)=>{
         console.log(err.code)
