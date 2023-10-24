@@ -1,8 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
-// const mongoose = require('mongoose')
 const QuestionDB = require("../models/Question");
+const Answer = require("../models/Answer");
+const Comment = require("../models/Comment");
 
 router.post("/", async (req, res) => {
   const questionData = new QuestionDB({
@@ -11,7 +12,6 @@ router.post("/", async (req, res) => {
     tags: req.body.tags,
     user: req.body.user,
   });
-
   await questionData
     .save()
     .then((doc) => {
@@ -22,27 +22,35 @@ router.post("/", async (req, res) => {
         message: "Question not added successfully",
       });
     });
+}); 
+router.get("/:id", async (req, res) => {
+  try {
+    const question = await QuestionDB.findOne({ _id: req.params.id }).exec();
+
+    if (!question) {
+      return res.status(404).json({ message: "Question not found" });
+    }
+
+    // Use Promise.all to fetch answers and comments for the question
+    const [answers, comments] = await Promise.all([
+      Answer.find({ question_id: req.params.id }).exec(),
+      Comment.find({ question_id: req.params.id }).exec(),
+    ]);
+
+    const questionDetails = {
+      question,
+      answers,
+      comments,
+    };
+    console.log(questionDetails);
+    res.status(200).json(questionDetails);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
- /*router.get("/", async (req, res) => {
-   const questions = await QuestionDB.find({});
-
-   try {
-     if (questions) {
-       res.status(200).send({ questions });
-     } else {
-       res.status(400).send({
-         message: "question not found",
-       });
-     }
-   } catch (e) {
-     res.status(400).send({
-       message: "Error in getting question",
-     });
-   }
- });
-*/
-router.get("/id", async (req, res) => {
+/*router.get("/:id", async (req, res) => {
   try {
     // const question = await QuestionDB.findOne({ _id: req.params.id });
     // res.status(200).send(question);
@@ -119,11 +127,9 @@ router.get("/id", async (req, res) => {
     ])
       .exec()
       .then((questionDetails) => {
-        console.log("Information has been sent")
         res.status(200).send(questionDetails);
       })
       .catch((e) => {
-        console.log("Inside the error block")
         console.log("Error: ", e);
         res.status(400).send(error);
       });
@@ -134,7 +140,7 @@ router.get("/id", async (req, res) => {
   }
 });
 
-/*router.get("/:id", async (req, res) => {
+  /*router.get("/id", async (req, res) => {
   try {
     // const question = await QuestionDB.findOne({ _id: req.params.id });
     // res.status(200).send(question);
