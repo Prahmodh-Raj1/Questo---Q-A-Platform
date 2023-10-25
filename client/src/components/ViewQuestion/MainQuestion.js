@@ -8,14 +8,25 @@ import './MainQuestion.css'
 import 'react-quill/dist/quill.snow.css'
 import parse from 'html-react-parser'
 import axios from 'axios';
+import { selectUser } from '../../features/userSlice';
+import { useSelector } from 'react-redux';
 function MainQuestion() {
     const [show, setShow] = useState(false);
+    const [answer, setAnswer] = useState("")
+    const user = useSelector(selectUser)
 
     const [questionData, setquestionData] = useState({
         question: {},
         answers: [],
         comments:[],
     })
+    const [Answers, setAnswerData] = useState([])
+
+    const handleQuill = (value)=>{
+        setAnswer(value)
+    }
+
+    
     let search = window.location.search
     console.log("Search string: " + search)
     const params = new URLSearchParams(search)
@@ -23,16 +34,46 @@ function MainQuestion() {
     console.log("id: " + id)
     useEffect(() => {
         async function getFunctionDetails() {
-          await axios
+           await axios
             .get(`/api/question/${id}`)
             .then((res) => {
                 console.log(res.data)
                 setquestionData(res.data)
-            })
+            }) 
             .catch((err) => console.log(err));
         }
         getFunctionDetails();
+        
       }, [id]);
+      async function getUpdatedAnswer() {
+        await axios
+          .get(`/api/question/${id}`)
+          .then((res) => setquestionData(res.data))
+          .catch((err) => console.log(err));
+      }
+    
+      // console.log(questionData);
+      const handleSubmit = async () => {
+        const body = {
+          question_id: id,
+          answer: answer,
+          user: user,
+        };
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+    
+        await axios
+          .post("/api/answer", body, config)
+          .then(() => {
+            alert("Answer added successfully");
+            setAnswer("");
+            getUpdatedAnswer();
+          })
+          .catch((err) => console.log(err));
+      };
 return (
         <div className='main'>
             <div className='main-container'>
@@ -51,7 +92,7 @@ return (
                         <p>Active<span>today</span></p>
                         <p>Views<span>today</span></p>
 
-                    </div>
+                    </div>  
                 </div>
                     <div className='all-questions'>
                         <div className='all-questions-container'>
@@ -65,7 +106,7 @@ return (
                             </div>
                         </div>
                         <div className='question-answer'>
-                            <p>{parse(questionData.question.body)}</p>
+                            <p>Content of the question available here</p>
                             <div className='author'>
                                 <small>asked at {new Date(questionData.question.created_at).toLocaleString()}</small>
                                 <div className='auth-details'>
@@ -99,35 +140,40 @@ return (
                         </div>
                     </div>
                     <div className='all-questions' style={{
-                        flexDirection: 'column',
-                    }}>
-                        <p style={{
-                            marginBottom: "20px",
-                            fontSize: "1.3rem",
-                            fontWeight: "300",
-                        }}>No. of answers</p>
-                        <div className='all-questions-container'>
-                        <div className='all-questions-left'>
-                            <div className='all-options'>
-                                <p className='arrow'>⬆</p>
-                                <p className='arrow'>0</p>
-                                <p className='arrow'>⬇</p>
-                                <BsFillBookmarkFill/>
-                                <AiOutlineHistory/>
-                            </div>
-                        </div>
-                        <div className='question-answer'>
-                            <p>This is question body</p>
-                            <div className='author'>
-                                <small>asked Timestamp</small>
-                                <div className='auth-details'>
-                                    <RxAvatar/>
-                                    <p>Author name</p>
-                                </div>
-                            </div>
-                            </div>
+    flexDirection: 'column',
+}}>
+    <p style={{
+        marginBottom: "20px",
+        fontSize: "1.3rem",
+        fontWeight: "300",
+    }}>{questionData.answers.length} Answers</p>
+    {
+        questionData.answers.map((answer) => (
+            <div className='all-questions-container' key={answer._id}>
+                <div className='all-questions-left'>
+                    <div className='all-options'>
+                        <p className='arrow'>⬆</p>
+                        <p className='arrow'>0</p>
+                        <p className='arrow'>⬇</p>
+                        <BsFillBookmarkFill/>
+                        <AiOutlineHistory/>
+                    </div>
+                </div>
+                <div className='question-answer'>
+                    <p>{parse(answer.answer)}</p>
+                    <div className='author'>
+                        <small>asked {new Date(answer.created_at).toLocaleString()}</small>
+                        <div className='auth-details'>
+                            <RxAvatar/>
+                            <p>{answer?.user?.displayName ? answer?.user?.displayName : String(answer?.user?.email).split('@')[0]}</p>
                         </div>
                     </div>
+                </div>
+            </div>
+        ))
+    }
+</div>
+
             </div>
             <div className='main-answer'>
                 <h3 style={{
@@ -135,12 +181,12 @@ return (
                     margin: "10px 0",
                     fontWeight: "400"
                 }}>Your Answer</h3>
-                <ReactQuill className='react-quill' theme='snow' style={{
+                <ReactQuill onChange={handleQuill} className='react-quill' theme='snow' style={{
                     height: "200px"
                 }}/>
             </div>
             
-            <button 
+            <button type='submit' onClick={handleSubmit}
     className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-400 max-w-fit mx-auto my-20">
     Post Answer
   </button>    
