@@ -3,26 +3,25 @@ const mongoose = require('mongoose');
 const router = express.Router()
 const AnswerDB = require('../models/Answer')
 
-router.post('/',async(req,res)=>{
+router.post('/', async (req, res) => {
     const answerData = new AnswerDB({
         question_id: req.body.question_id,
         answer: req.body.answer,
         user: req.body.user
-    })
-    await answerData.save().then((doc)=>{
+    });
+
+    try {
+        const doc = await answerData.save();
         res.status(201).send({
             status: true,
             data: doc
-        }).catch((err)=>{
-            res.status(400).send({
-                status: false,
-                message: "error while adding answer"
-            })
-        })
-    })
-})
+        });
+    } catch (err) {
+        res.status(400).send({
+            status: false,
+            message: "Error while adding answer"
+        });
+    }
+});
 
-router.get('/',async(req,res)=>{
-    
-})
 module.exports = router
