@@ -5,9 +5,10 @@ import PublicIcon from '@material-ui/icons/Public';
 import WorkIcon from '@material-ui/icons/Work';*/
 import { MdPublic } from 'react-icons/md';
 import { LiaStarSolid } from 'react-icons/lia';
-import { Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink, useNavigate} from 'react-router-dom';
 import { MdWork } from 'react-icons/md';
 function Sidebar() {
+    const navigate = useNavigate()
   return (
     <div className='sidebar'>
         <div className='sidebar-container'>
@@ -57,6 +58,18 @@ function Sidebar() {
                         <RouterLink to='/'>Companies</RouterLink>        
                     </div>
                     
+                </div>
+                <div className='mt-6 mb-6'>
+                <button onClick={()=> navigate('/analytics')}
+    className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-400">
+    View Analytics
+  </button>
+                </div>
+                <div className='mt-6 mb-6'>
+                <button  onClick={()=>navigate('/feedback')}
+    className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-400">
+    Give Feedback
+  </button>
                 </div>
 
                 

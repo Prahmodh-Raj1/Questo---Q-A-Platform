@@ -16,6 +16,8 @@ import PrivateRoute from './PrivateRoute';
 import { Navigate } from 'react-router-dom';
 import Provider from 'react-redux';
 import MainLanding from './components/LandingPages/MainLanding';
+import Analysis from './components/Analytics/Analysis';
+import UserFeedback from './components/Feedback/UserFeedback';
 
 function App() {
   const user = useSelector(selectUser)
@@ -55,12 +57,13 @@ function App() {
         <Routes>
           <Route path="/" element={<MainLanding/>}/>
           <Route path="/auth" element={<Index />} />
-          
+          <Route path="/feedback" element={<PrivateRoute><UserFeedback/></PrivateRoute>}/>
+          <Route path='/analytics' element={<PrivateRoute><Analysis/></PrivateRoute>}></Route>
           <Route path="/home" element={<PrivateRoute user={user}><HomePage /></PrivateRoute>} />
-
+          
           <Route path="/add-question" element={<PrivateRoute user={user}><Question /></PrivateRoute>} />
           <Route path="/question" element={<PrivateRoute user={user}><ViewPage /></PrivateRoute>} />
-
+         
         </Routes>
       </BrowserRouter>
     </div>

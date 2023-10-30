@@ -27,7 +27,10 @@ function Header() {
     <span onClick={()=>{
       auth.signOut();
     }}><RxAvatar size={72}/></span>
-    <BiSolidInbox size={72}/> 
+
+    <span onClick={()=>{
+      
+    }}><BiSolidInbox size={72}/></span> 
     <BiHelpCircle size={72} />
   </div>
       {/*<div className="header-right">

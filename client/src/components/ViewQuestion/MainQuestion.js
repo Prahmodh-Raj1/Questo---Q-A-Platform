@@ -10,11 +10,13 @@ import parse from 'html-react-parser'
 import axios from 'axios';
 import { selectUser } from '../../features/userSlice';
 import { useSelector } from 'react-redux';
+import emailjs from 'emailjs-com'
 function MainQuestion() {
     const [show, setShow] = useState(false);
     const [answer, setAnswer] = useState("")
     const user = useSelector(selectUser)
-
+    const [bodycontent, setBodyContent] = useState("")
+    const [comment, setComment] = useState("")
     const [questionData, setquestionData] = useState({
         question: {},
         answers: [],
@@ -25,8 +27,73 @@ function MainQuestion() {
     const handleQuill = (value)=>{
         setAnswer(value)
     }
-
+    const sendEmailAnswer = () => {
+        const templateParams = {
+            name: questionData?.question?.user?.displayName ? questionData?.question?.user?.displayName : String(questionData?.question?.user?.email).split('@')[0],
+            sender: user?.displayName ? user?.displayName:String(user?.email).split('@')[0],
+            question_id: questionData.question._id,
+            title: questionData.question.title,
+            created_at: questionData.question.created_at,
+            adminemail: "prahmodh@gmail.com",
+            message: "Thank you for using the Questo Platform",
+            to_email: questionData.question.user.email
+        } 
+        const emailParams = {
+            service_id: 'service_wimtjw7',
+            template_id: 'template_mb85zx1',
+            user_id: '6LPkf5o1DnbiXrMSG',
+            template_params: templateParams,
+            to_email: questionData.question.user.email
+          };
+          emailjs
+          .send(
+            emailParams.service_id,
+            emailParams.template_id,
+            emailParams.template_params,
+            emailParams.user_id,
+            emailParams.to_email
+          )
+          .then((result) => {
+            console.log('Email sent successfully:', result.text);
+          })
+          .catch((error) => {
+            console.error('Error sending email:', error.text);
+          });
+    }
     
+    const sendEmailComment = () => {
+        const templateParams = {
+            name: questionData?.question?.user?.displayName ? questionData?.question?.user?.displayName : String(questionData?.question?.user?.email).split('@')[0],
+            sender: user?.displayName ? user?.displayName:String(user?.email).split('@')[0],
+            question_id: questionData.question._id,
+            title: questionData.question.title,
+            created_at: questionData.question.created_at,
+            adminemail: "prahmodh@gmail.com",
+            message: "Thank you for using the Questo Platform",
+            to_email: questionData.question.user.email
+        }
+        const emailParams = {
+            service_id: 'service_wimtjw7',
+            template_id: 'template_hppxait',
+            user_id: '6LPkf5o1DnbiXrMSG',
+            template_params: templateParams,
+            to_email: questionData.question.user.email
+          };
+          emailjs
+          .send(
+            emailParams.service_id,
+            emailParams.template_id,
+            emailParams.template_params,
+            emailParams.user_id,
+            emailParams.to_email
+          )
+          .then((result) => {
+            console.log('Email sent successfully:', result.text);
+          })
+          .catch((error) => {
+            console.error('Error sending email:', error.text);
+          });
+    }
     let search = window.location.search
     console.log("Search string: " + search)
     const params = new URLSearchParams(search)
@@ -39,6 +106,8 @@ function MainQuestion() {
             .then((res) => {
                 console.log(res.data)
                 setquestionData(res.data)
+                setBodyContent(res.data.question.body);
+                console.log("bodycontent: ",bodycontent)
             }) 
             .catch((err) => console.log(err));
         }
@@ -48,7 +117,11 @@ function MainQuestion() {
       async function getUpdatedAnswer() {
         await axios
           .get(`/api/question/${id}`)
-          .then((res) => setquestionData(res.data))
+          .then((res) => {
+            setquestionData(res.data)
+            setBodyContent(res.data.question.body);
+            console.log("bodycontent: ",bodycontent)
+          })
           .catch((err) => console.log(err));
       }
     
@@ -71,9 +144,30 @@ function MainQuestion() {
             alert("Answer added successfully");
             setAnswer("");
             getUpdatedAnswer();
+            sendEmailAnswer();
           })
           .catch((err) => console.log(err));
       };
+
+      const handleComment = async() =>{
+        if(comment!==""){
+            const body = {
+                question_id: id,
+                comment: comment,
+                user: user
+            }
+            await axios.post(`/api/comment/${id}`,body).then((res)=>{
+                console.log(res.data)
+                setComment("")
+                alert("Comment added successfully")
+                setShow(false)
+                getUpdatedAnswer()
+                sendEmailComment()
+                
+            })
+        }
+        
+      }
 return (
         <div className='main'>
             <div className='main-container'>
@@ -106,7 +200,7 @@ return (
                             </div>
                         </div>
                         <div className='question-answer'>
-                            <p>Content of the question available here</p>
+                            <p>{parse(bodycontent)}</p>
                             <div className='author'>
                                 <small>asked at {new Date(questionData.question.created_at).toLocaleString()}</small>
                                 <div className='auth-details'>
@@ -115,27 +209,49 @@ return (
                                 </div>
                             </div>
                             <div className="comments">
-                                <div className="comment">
-                                    <p>This is comment - <span>Username</span>
-                                <small>Timestamp</small></p>
-                                    
-                                </div>
-                                <p onClick={()=> setShow(!show)}>Add comment</p>
-                                {
-                                    show && (<div className='title'>
-                                        <textarea type = "text" placeholder='Add your comment...' rows={5} style={{
-                                            margin: "5px 0px",
-                                            padding: "10px",
-                                            border: "1px solid rgba(0,0,0,0.2)",
-                                            borderRadius: "3px",
-                                            outline:'none'
-                                        }}></textarea>
-                                        <button style={{
-                                            maxWidth: 'fit-content'
-                                        }}>Add Comment</button>
-                                    </div>)
-                                }
-                            </div>
+                <div className="comment">
+                  {questionData?.comments &&
+                    questionData?.comments.map((_qd) => (
+                      <p key={_qd?._id}>
+                        {_qd.comment}{"\n"}
+                        <span>
+                          - {_qd.user.displayName ? _qd.user.displayName : String(_qd?.user?.email).split('@')[0]}
+                        </span>{" "}
+                        {"    "}
+                        <small>
+                          {new Date(_qd.created_at).toLocaleString()}
+                        </small>
+                      </p>
+                    ))}
+                </div>
+                <p onClick={() => setShow(!show)}>Add a comment</p>
+                {show && (
+                  <div className="title">
+                    <textarea
+                      style={{
+                        margin: "5px 0px",
+                        padding: "10px",
+                        border: "1px solid rgba(0, 0, 0, 0.2)",
+                        borderRadius: "3px",
+                        outline: "none",
+                      }}
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      type="text"
+                      placeholder="Add your comment..."
+                      rows={5}
+                    />
+                    <button
+                      onClick={handleComment}
+                      style={{
+                        maxWidth: "fit-content",
+                      }}
+                    >
+                      Add comment
+                    </button>
+                  </div>
+                )}
+              </div>
                             </div>
                         </div>
                     </div>

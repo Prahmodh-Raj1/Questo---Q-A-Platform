@@ -1,0 +1,10 @@
+.chart-container {
+    background: #282828;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  
+  .chart-title {
+    color: white;
+    text-align: center;
+  }
