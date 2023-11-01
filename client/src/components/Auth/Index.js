@@ -110,9 +110,7 @@ function Index() {
                       (e)=>setPassword(e.target.value) 
                     }type='password'/>
                   </div>
-                  <button onClick={handleRegister} disabled={loading} style={{
-                    marginTop: "10px"
-                  }}>{loading ? 'Registering...':'Register'}</button>
+                  <button onClick={handleRegister} disabled={loading} className='bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded mt-5'>{loading ? 'Registering...':'Register'}</button>
                 </>):(<>
                   
                   <div className='input-field'>
@@ -125,9 +123,7 @@ function Index() {
                       (e)=>setPassword(e.target.value) 
                     }type='password'/>
                   </div>
-                  <button onClick={handleSignIn} disabled={loading} style={{
-                    marginTop: "10px"
-                  }}>{loading ? 'Signing in...' : 'Login'}</button></>)
+                  <button onClick={handleSignIn} disabled={loading} className='bg-blue-500 hover:bg-blue-400 text-white px-4 py-2 rounded mt-5'>{loading ? 'Signing in...' : 'Login'}</button></>)
               }
               <p onClick={()=>{
                 setRegister(!register)

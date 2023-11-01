@@ -34,20 +34,9 @@ function MainPage({questions}) {
             <p>{questions && questions.length} Questions</p>
             <div className='main-filter'>
               <div className='main-tabs'>
-                <div className='main-tab'>
-                  <Link to='/home'>Most Recent</Link>
-                </div>
-                <div className='main-tab'>
-                  <Link to='/home'>Active</Link>
-                </div>
-                <div className='main-tab'>
-                  <Link to='/home'>More</Link>
-                </div>
+                
               </div>
-              <div className='main-filter-item'>
-              <AiFillFilter/>
-                <p>Filter</p>
-              </div>
+              
             </div>
           </div>
           <div className="questions">

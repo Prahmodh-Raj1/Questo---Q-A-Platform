@@ -184,7 +184,7 @@ return (
                     <div className='info'>
                         <p>Created at: {new Date(questionData.question.created_at).toLocaleString()}</p>
                         <p>Active<span>today</span></p>
-                        <p>Views<span>today</span></p>
+                        
 
                     </div>  
                 </div>
@@ -192,9 +192,7 @@ return (
                         <div className='all-questions-container'>
                         <div className='all-questions-left'>
                             <div className='all-options'>
-                                <p className='arrow'>⬆</p>
-                                <p className='arrow'>0</p>
-                                <p className='arrow'>⬇</p>
+                                
                                 <BsFillBookmarkFill/>
                                 <AiOutlineHistory/>
                             </div>
@@ -243,9 +241,7 @@ return (
                     />
                     <button
                       onClick={handleComment}
-                      style={{
-                        maxWidth: "fit-content",
-                      }}
+                      className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-400 max-w-fit mx-auto my-20"
                     >
                       Add comment
                     </button>
@@ -268,9 +264,7 @@ return (
             <div className='all-questions-container' key={answer._id}>
                 <div className='all-questions-left'>
                     <div className='all-options'>
-                        <p className='arrow'>⬆</p>
-                        <p className='arrow'>0</p>
-                        <p className='arrow'>⬇</p>
+                       
                         <BsFillBookmarkFill/>
                         <AiOutlineHistory/>
                     </div>

@@ -138,7 +138,19 @@ const data = {
     {
         chartData.labels && chartData.datasets ? (  
             <div className style={{ padding: '20px', margin: 'auto', width: '60%', height: '60%' }}>
-            <h2 className style={{size: '5px'}}>Most Popular Tags</h2>
+            <h2 style={{
+    fontSize: '32px',
+    fontWeight: 'bold', 
+    color: 'linear-gradient(to right, #00b7ff, #009dff)',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    letterSpacing: '2px',
+    marginBottom: '20px',
+    textDecoration: 'underline',
+    textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+  }}>  
+    Most Popular Tags
+  </h2>
               <Line data={chartData} options={lineOptions} />      
             </div>
         ) : <div>Loading...</div>

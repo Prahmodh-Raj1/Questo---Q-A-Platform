@@ -15,15 +15,15 @@ function AllQuestions({question}) {
         <div className='all-questions-left'>
           <div className='all-options'>
             <div className='all-option'>
-              <p>0</p>
-              <span>Votes</span>
+              <p>{question?.comments?.length}</p>
+              <span>Comments</span>
             </div>
             <div className='all-option'>
               <p>{question?.answerDetails?.length}</p>
               <span>Answers</span>
             </div>
             <div className='all-option'>
-              <small>0 Views</small>
+              
             </div>
           </div>
         </div>

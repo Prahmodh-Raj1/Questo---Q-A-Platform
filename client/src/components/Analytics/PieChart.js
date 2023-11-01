@@ -67,7 +67,19 @@ const PieChart = () => {
   return (
     
     <div style={{padding: '20px', margin: 'auto', height: '50%', width: '50%'}}>
-        <h2>Questions vs Answers vs Comments on Questo</h2>
+        <h2 style={{
+    fontSize: '32px',
+    fontWeight: 'bold', 
+    color: 'linear-gradient(to right, #00b7ff, #009dff)',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    letterSpacing: '2px',
+    marginBottom: '20px',
+    textDecoration: 'underline',
+    textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+  }}>  
+    Questions vs Answers vs Comments on Questo
+  </h2>
     <Pie 
       data={chartData}
       options={pieoptions}

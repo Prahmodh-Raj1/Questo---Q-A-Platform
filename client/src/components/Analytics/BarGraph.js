@@ -125,7 +125,19 @@ function BarChart() {
   }, []);
   return (
     <div style={{ padding: '20px', margin: 'auto', width: '70%', height: '70%' }}>
-      <h2 style={{size: '10px'}}>Most Popular Questions</h2>
+      <h2 style={{
+    fontSize: '32px',
+    fontWeight: 'bold', 
+    color: 'linear-gradient(to right, #00b7ff, #009dff)',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    letterSpacing: '2px',
+    marginBottom: '20px',
+    textDecoration: 'underline',
+    textShadow: '2px 2px 4px rgba(0,0,0,0.5)'
+  }}>  
+    Most Popular Questions
+  </h2>
         <Bar data={chartData} options={optionsbar} />      
       </div>
   )

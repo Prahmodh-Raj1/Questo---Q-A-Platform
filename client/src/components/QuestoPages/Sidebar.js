@@ -21,7 +21,7 @@ function Sidebar() {
                     <div className='link'>
                         <div className='link-tag'>
                            <MdPublic/>
-                            <RouterLink to='/'>Question</RouterLink>
+                            <RouterLink to='/add-question'>Question</RouterLink>
                         </div>
                         <div className='tags'>
                             <p>Tags</p>
@@ -30,14 +30,10 @@ function Sidebar() {
                     </div>
                 </div>
                 <div className='sidebar-option'>
-                    <p>Collectives</p>
+                    
                 
                     <div className='link'>
-                        <div className='link-tag'>
-                            <LiaStarSolid/>
-                            <RouterLink to='/'>Explore Collectives</RouterLink>
-                        </div>
-                        
+  
                     </div>
                 </div>
                 <div className='sidebar-option'>
@@ -45,20 +41,13 @@ function Sidebar() {
                     <div className='link'>
                         <div className='link-tag'>
                             
-                            <RouterLink to='/'>Question</RouterLink>
+                            <RouterLink to='/add-question'>Post Question</RouterLink>
                         </div>
                         
                     </div>
                     
                 </div>
-                <div className='sidebar-option'>
-                    <p>TEAMS</p>
-                    <div className='link-tag'>
-                        <MdWork/>
-                        <RouterLink to='/'>Companies</RouterLink>        
-                    </div>
-                    
-                </div>
+                
                 <div className='mt-6 mb-6'>
                 <button onClick={()=> navigate('/analytics')}
     className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-400">
