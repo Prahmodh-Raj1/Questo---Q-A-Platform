@@ -140,8 +140,8 @@ router.get("/tags",async (req, res) => {
     
     // Sort by count to get top 5
     let topTags = Object.keys(tagCounts)
-      .sort((a,b) => tagCounts[b] - tagCounts[a])
-      .slice(0, 5);
+      .sort((a,b) => tagCounts[a] - tagCounts[b])
+      .slice(0, 10);
 
     // Structure data for chart
     let chartData = {
