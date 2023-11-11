@@ -5,18 +5,12 @@ import AllQuestions from './AllQuestions'
 import './Main.css'
 import { AiFillFilter } from 'react-icons/ai';
 import axios from 'axios'
+//import { useState } from 'react';
+
 function MainPage({questions}) {
-  /*const [questions,setQuestions] = useState([])
-  useEffect( ()=>{
-    //async function getQuestion(){
-      axios.get('/api/question').then((res)=>{
-        console.log("hi there")
-        console.log(res.data)
-      }).catch((err)=> console.log(err))
-    
-    //getQuestion()
-    
-  },[])*/
+
+  const [search, setSearch] = useState('');
+
   return (
     <div className='main'>
         <div className='main-container'>
@@ -38,18 +32,29 @@ function MainPage({questions}) {
               </div>
               
             </div>
+            <input 
+        className="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-blue-500 focus:border-blue-500" 
+        type="text"
+        placeholder="Search questions"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}  
+      />
           </div>
-          <div className="questions">
-          {questions?.map((_q,index) => (
-            <div key = {index} className="question">
-              <AllQuestions question={_q} />
-            </div>
-          ))}
-        </div>
-        </div>
+         
+      <div className="questions">
+        {questions?.filter(q => 
+          q.title.toLowerCase().includes(search.toLowerCase())
+        ).map((_q,index) => (
+          <AllQuestions 
+            question={_q}
+            search={search} 
+            key={index}  
+          />
+        ))}
+      </div>
     </div>
-    
+    </div>
   )
 }
 
-export default MainPage
+export default MainPage;

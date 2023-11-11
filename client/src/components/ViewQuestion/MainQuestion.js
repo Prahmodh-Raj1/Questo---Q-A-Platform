@@ -14,15 +14,27 @@ import emailjs from 'emailjs-com'
 function MainQuestion() {
     const [show, setShow] = useState(false);
     const [answer, setAnswer] = useState("")
+    const [votes,setVotes] = useState(0)
     const user = useSelector(selectUser)
     const [bodycontent, setBodyContent] = useState("")
     const [comment, setComment] = useState("")
+    
     const [questionData, setquestionData] = useState({
         question: {},
         answers: [],
         comments:[],
     })
     const [Answers, setAnswerData] = useState([])
+    const [qvotes, setQVotes] = useState(0);
+    const upvoteQuestion = async () => {
+      const res = await axios.put(`/api/question/${questionData.question._id}/upvote`);
+      setQVotes(res.data.votes);
+    }
+
+    const downvoteQuestion = async () => {
+      const res = await axios.put(`/api/question/${questionData.question._id}/downvote`);
+      setQVotes(res.data.votes); 
+    }
 
     const handleQuill = (value)=>{
         setAnswer(value)
@@ -108,6 +120,7 @@ function MainQuestion() {
                 setquestionData(res.data)
                 setBodyContent(res.data.question.body);
                 console.log("bodycontent: ",bodycontent)
+                setQVotes(res.data.question.votes)
             }) 
             .catch((err) => console.log(err));
         }
@@ -192,7 +205,11 @@ return (
                         <div className='all-questions-container'>
                         <div className='all-questions-left'>
                             <div className='all-options'>
-                                
+                            <span className="arrow" onClick={upvoteQuestion}>▲</span>
+
+                            <p className="arrow" >{qvotes}</p>
+
+                            <span className="arrow" onClick={downvoteQuestion}>▼</span>
                                 <BsFillBookmarkFill/>
                                 <AiOutlineHistory/>
                             </div>
@@ -261,10 +278,15 @@ return (
     }}>{questionData.answers.length} Answers</p>
     {
         questionData.answers.map((answer) => (
+          
             <div className='all-questions-container' key={answer._id}>
                 <div className='all-questions-left'>
                     <div className='all-options'>
-                       
+                    <p className="arrow" onClick={()=>setVotes(votes+1)}>▲</p>
+
+                    <p className="arrow">{votes}</p>
+
+                    <p className="arrow" onClick={()=>setVotes(votes-1)}>▼</p>
                         <BsFillBookmarkFill/>
                         <AiOutlineHistory/>
                     </div>

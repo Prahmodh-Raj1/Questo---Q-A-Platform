@@ -64,16 +64,18 @@ function LineChart() {
           xAxes:[{
             scaleLabel:{
               display:true,
-              labelString:'Tag'
+              text:'Tag',
             }
           }],
           yAxes:[{
             scaleLabel:{
               display:true,
-              labelString:'Frequency',
+              text:'Frequency',
             }  
           }]
-        }
+        },
+        
+        
 }
 const [chartData, setChartData] = useState({
     labels: [],

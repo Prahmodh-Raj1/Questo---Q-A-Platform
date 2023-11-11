@@ -37,7 +37,7 @@ function Sidebar() {
                     </div>
                 </div>
                 <div className='sidebar-option'>
-                    <p>Find a Job</p>
+                    <p>Interact with platform</p>
                     <div className='link'>
                         <div className='link-tag'>
                             

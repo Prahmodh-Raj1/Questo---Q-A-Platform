@@ -3,8 +3,12 @@ import './AllQuestions.css'
 import {Link} from 'react-router-dom'
 import parse from 'html-react-parser'
 import { RxAvatar } from 'react-icons/rx'
-function AllQuestions({question}) {
-  function truncate(str, n) {
+function AllQuestions({question, search}) {
+
+  if(!question.title.toLowerCase().includes(search.toLowerCase())) {
+    return null;
+  }
+    function truncate(str, n) {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   }
   let tags = JSON.parse(question?.tags[0])
@@ -23,7 +27,8 @@ function AllQuestions({question}) {
               <span>Answers</span>
             </div>
             <div className='all-option'>
-              
+              <p>{question?.votes ? question?.votes : 0}</p>
+              <span>Rating</span>
             </div>
           </div>
         </div>
