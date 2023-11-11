@@ -23,5 +23,29 @@ router.post('/', async (req, res) => {
         });
     }
 });
+router.put('/:id/downvote', async (req, res) => {
+    try {
+      const answer = await AnswerDB.findById(req.params.id);
+      answer.votes -= 1;
+      await answer.save();
+      res.json(answer);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server Error');
+    }
+  });
+
+  router.put('/:id/upvote', async (req, res) => {
+    try {
+      const answer = await AnswerDB.findById(req.params.id);
+      answer.votes += 1;
+      await answer.save();
+      res.json(answer); 
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server Error');
+    }
+  });
+
 
 module.exports = router

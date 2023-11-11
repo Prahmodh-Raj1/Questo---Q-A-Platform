@@ -11,6 +11,10 @@ const questionSchema = new mongoose.Schema({
     comment_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comments"
+    },
+    votes: {
+        type: Number,
+        default: 0
     } 
 })
 

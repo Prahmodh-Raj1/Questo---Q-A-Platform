@@ -188,6 +188,31 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+router.put('/:id/upvote', async (req, res) => {
+  try {
+    const question = await QuestionDB.findById(req.params.id);
+    question.votes += 1;
+    await question.save();
+    res.json(question); 
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.put('/:id/downvote', async (req, res) => {
+  try {
+    const question = await QuestionDB.findById(req.params.id);
+    question.votes -= 1;
+    await question.save();
+    res.json(question);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
 router.get("/", async (req, res) => {
   const error = {
     message: "Error in retrieving questions",
